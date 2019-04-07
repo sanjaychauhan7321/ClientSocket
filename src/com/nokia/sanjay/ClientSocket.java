@@ -54,9 +54,9 @@ public class ClientSocket {
 			try {
 				socketInputStreamScanner = new Scanner(socket.getInputStream());
 
-				//while (socketInputStreamScanner.hasNext()) {
+				while (socketInputStreamScanner.hasNext()) {
 					System.out.println(socketInputStreamScanner.nextLine());
-				//}
+				}
 			} catch (IOException e) {
 				System.out.println(
 						"An I/O error occured while creating the input stream, the socket is closed, the socket is not connected, or the socket input has been shutdownusing shutdownInput(). Reason : "
