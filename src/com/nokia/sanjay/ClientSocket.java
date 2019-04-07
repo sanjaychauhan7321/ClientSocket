@@ -15,11 +15,11 @@ public class ClientSocket {
 		Socket socket = null;
 		Scanner systemInputStreamScanner = null;
 		Scanner socketInputStreamScanner = null;
+		String inputValue = null;
+		PrintStream printStream = null;
 		try {
 			try {
 				socket = new Socket("127.0.0.1", 1234);
-				System.out.println("Please enter something !");
-				systemInputStreamScanner = new Scanner(System.in);
 
 			} catch (IOException e) {
 
@@ -31,14 +31,11 @@ public class ClientSocket {
 
 			}
 
+			System.out.println("Please enter something !");
+			systemInputStreamScanner = new Scanner(System.in);
+
 			try {
-				PrintStream printStream = new PrintStream(socket.getOutputStream());
-				String inputValue = null;
-
-				inputValue = systemInputStreamScanner.nextLine();
-				printStream.println(inputValue);
-
-				System.out.println("Data sent to server socket : " + inputValue);
+				printStream = new PrintStream(socket.getOutputStream());
 
 			} catch (IOException e) {
 
@@ -51,12 +48,13 @@ public class ClientSocket {
 
 			}
 
+			inputValue = systemInputStreamScanner.nextLine();
+			printStream.println(inputValue);
+			System.out.println("Data sent to server socket : " + inputValue);
+
 			try {
 				socketInputStreamScanner = new Scanner(socket.getInputStream());
 
-				while (socketInputStreamScanner.hasNext()) {
-					System.out.println(socketInputStreamScanner.nextLine());
-				}
 			} catch (IOException e) {
 				System.out.println(
 						"An I/O error occured while creating the input stream, the socket is closed, the socket is not connected, or the socket input has been shutdownusing shutdownInput(). Reason : "
@@ -65,6 +63,11 @@ public class ClientSocket {
 						"An I/O error occured while creating the input stream, the socket is closed, the socket is not connected, or the socket input has been shutdownusing shutdownInput(). Reason : "
 								+ e.getMessage());
 
+			}
+
+			// Read from the client side socket input stream
+			while (socketInputStreamScanner.hasNext()) {
+				System.out.println(socketInputStreamScanner.nextLine());
 			}
 		}
 
@@ -81,6 +84,9 @@ public class ClientSocket {
 			}
 			if (null != socketInputStreamScanner) {
 				socketInputStreamScanner.close();
+			}
+			if (null != printStream) {
+				printStream.close();
 			}
 		}
 
